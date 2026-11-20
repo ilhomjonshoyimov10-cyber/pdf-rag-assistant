@@ -1,0 +1,12 @@
+services:
+  rag:
+    build: .
+    env_file: .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - rag-storage:/app/storage   # the index survives restarts
+    restart: unless-stopped
+
+volumes:
+  rag-storage:
