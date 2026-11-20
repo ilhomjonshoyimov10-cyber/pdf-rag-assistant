@@ -22,4 +22,5 @@ class Settings(BaseSettings):
     # Truncate words to N characters for BM25 (simple stemming for Uzbek/Turkic suffixes). 0 = off.
     bm25_prefix_len: int = Field(default=5, ge=0)
     max_upload_mb: int = 20
-    seed_samples: bool = True  # index samples/*.pdf on first start so the demo is not empty
+    seed_samples: bool = True  # index the PDFs in samples_dir on first start so the demo is not empty
+    samples_dir: str = "samples"  # relative to the working directory (/app in Docker)

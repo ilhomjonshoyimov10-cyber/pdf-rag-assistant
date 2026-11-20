@@ -21,7 +21,6 @@ from rag.store import DocumentStore
 
 logger = logging.getLogger(__name__)
 STATIC_DIR = Path(__file__).parent / "static"
-SAMPLES_DIR = Path(__file__).resolve().parent.parent / "samples"
 
 
 class AskRequest(BaseModel):
@@ -55,7 +54,7 @@ def create_app(pipeline: RAGPipeline | None = None, settings: Settings | None = 
     async def lifespan(app: FastAPI):
         app.state.pipeline = pipeline or await run_in_threadpool(build_pipeline, settings)
         if pipeline is None and settings.seed_samples and not app.state.pipeline.documents():
-            for pdf in sorted(SAMPLES_DIR.glob("*.pdf")):
+            for pdf in sorted(Path(settings.samples_dir).glob("*.pdf")):
                 await run_in_threadpool(app.state.pipeline.ingest, pdf.name, pdf.read_bytes())
                 logger.info("Indexed sample %s", pdf.name)
         yield
